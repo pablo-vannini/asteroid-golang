@@ -1,21 +1,30 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"sync"
+)
 
 func main() {
+	var wg sync.WaitGroup
+	defer wg.Wait()
 	count := 10
 	for a := 0; a < count; a++ {
-		for e := 0; e < count; e++ {
-			for h := 0; h < count; h++ {
-				for n := 0; n < count; n++ {
-					for r := 0; r < count; r++ {
-						for s := 0; s < count; s++ {
-							for t := 0; t < count; t++ {
-								for u := 0; u < count; u++ {
-									for v := 0; v < count; v++ {
-										if result := test(a, e, h, n, r, s, t, u, v); result {
-											fmt.Printf("Eureka: %d %d %d %d %d %d %d %d %d\n", a, e, h, n, r, s, t, u, v)
-											fmt.Printf("EARTH: %d %d %d %d %d\n\n", e, a, r, t, h)
+		go func(a int) {
+			defer wg.Done()
+			for e := 0; e < count; e++ {
+				for h := 0; h < count; h++ {
+					for n := 0; n < count; n++ {
+						for r := 0; r < count; r++ {
+							for s := 0; s < count; s++ {
+								for t := 0; t < count; t++ {
+									for u := 0; u < count; u++ {
+										for v := 0; v < count; v++ {
+
+											if result := test(a, e, h, n, r, s, t, u, v); result {
+												fmt.Printf("Eureka: %d %d %d %d %d %d %d %d %d\n", a, e, h, n, r, s, t, u, v)
+												fmt.Printf("EARTH: %d %d %d %d %d\n\n", e, a, r, t, h)
+											}
 										}
 									}
 								}
@@ -24,7 +33,8 @@ func main() {
 					}
 				}
 			}
-		}
+		}(a)
+		wg.Add(1)
 	}
 }
 
